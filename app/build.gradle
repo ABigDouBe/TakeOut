@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        flatDir {
+            dirs 'libs' //就是你放aar的目录地址
+        }
+    }
 }
 
 dependencies {
@@ -43,5 +48,7 @@ dependencies {
     // 引入SliderLayou
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.yashoid:sliderlayout:1.0.1'
+    // slider图片展示
+    compile 'com.daimajia.slider:library:1.1.5@aar'
+    compile 'com.android.support:design:25+'
 }

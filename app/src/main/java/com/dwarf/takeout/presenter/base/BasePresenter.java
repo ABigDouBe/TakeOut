@@ -36,7 +36,6 @@ public abstract class BasePresenter {
 
         mRequestAPI = retrofit.create(RequestAPI.class);
 
-
         // 获取上下文
         // 问题：如果上下文对应的是某个Activity或Fragment，生命周期过断
         // 此处设置的上下文需要有较长的生命周期
@@ -44,7 +43,6 @@ public abstract class BasePresenter {
     }
 
     protected class CallbackAdapter implements Callback<ResponseInfo>{
-
         private HashMap<String ,String> errorInfo;
 
         public CallbackAdapter() {
@@ -58,6 +56,7 @@ public abstract class BasePresenter {
             if("0".equals(body.getCode())) {
                 // 服务器处理成功，可以解析data数据了
                 parserData(body.getData());
+                successed("成功");
             }else{
                 String error=errorInfo.get(body.getCode());
                 onFailure(call,new RuntimeException(error));
@@ -83,6 +82,7 @@ public abstract class BasePresenter {
      * @param message
      */
     protected abstract void failed(String message);
+    protected abstract void successed(String message);
 
     /**
      * 解析服务器回复数据

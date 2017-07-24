@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateSwitchUI(int index) {
         mChildCount = mMainBottomSwitchContainer.getChildCount();
         for (int i = 0; i < mChildCount; i++) {
-            setEnable(mMainBottomSwitchContainer.getChildAt(i),!(index!=i));
+            setEnable(mMainBottomSwitchContainer.getChildAt(i),index!=i);
         }
 //        View childAt = mMainBottomSwitchContainer.getChildAt(index);
     }

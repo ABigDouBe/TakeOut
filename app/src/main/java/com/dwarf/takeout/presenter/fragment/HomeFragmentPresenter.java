@@ -17,6 +17,7 @@ import retrofit2.Response;
 
 public class HomeFragmentPresenter extends BasePresenter {
     HomeFragment fragment;
+    private boolean mIsSuccessed = false;
 
     public HomeFragmentPresenter(HomeFragment fragment) {
         this.fragment = fragment;
@@ -24,48 +25,25 @@ public class HomeFragmentPresenter extends BasePresenter {
 
     public void getData(){
         Call<ResponseInfo> home = mRequestAPI.home();
-        home.enqueue(new Callback<ResponseInfo>() {
-            @Override
-            public void onResponse(Call<ResponseInfo> call, Response<ResponseInfo> response) {
-                // 处理回复
-                if (response != null && response.isSuccessful()) {
-                    ResponseInfo info = response.body();
-                    if("0".equals(info.code)){
-                        // 服务器端处理成功，并返回目标数据
-                        parserData(info.data);
-                    }else{
-                        // 服务器端处理成功，返回错误提示，该信息需要展示给用户
-                        // 依据code值获取到失败的数据
-                        String msg = ErrorInfo.INFO.get(info.code);
-                        failed(msg);
-                    }
-
-                } else {
-                    // 联网过程中的异常
-
-                    failed("shibai");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseInfo> call, Throwable t) {
-                //网络获取异常
-                failed("yichang");
-            }
-        });
+        home.enqueue(new CallbackAdapter());
     }
 
     @Override
     protected void failed(String message) {
         fragment.failed(message);
     }
+
+    @Override
+    protected void successed(String message) {
+        fragment.successed(message);
+    }
+
+
     @Override
     protected void parserData(String data) {
         // 解析数据：data
         Gson gson=new Gson();
         HomeInfo info = gson.fromJson(data, HomeInfo.class);
         fragment.getAdapter().setData(info);
-
     }
 }

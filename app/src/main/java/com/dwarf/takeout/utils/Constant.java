@@ -9,7 +9,7 @@ import com.dwarf.takeout.MyApplication;
 public  interface Constant {
 
 //    String ip = MyApplication.ip;
-    String ip = "192.168.125.28";
+    String ip = "47.94.91.212";
     //192.168.199.215
     //192.168.82.250
      String replace_img_url = ip;

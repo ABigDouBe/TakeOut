@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-<!--com.daimajia.slider.library.SliderLayout-->
-    <com.yashoid.sliderlayout.SliderLayout
+    <!--com.daimajia.slider.library.SliderLayout-->
+    <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"/>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="#F0F0F0" />
+        android:background="#F0F0F0"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,15 +43,15 @@
             android:layout_width="26dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:src="@mipmap/icon_shop" />
+            android:src="@mipmap/icon_shop"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="附近商家" />
+            android:text="附近商家"
+            android:textColor="@android:color/darker_gray"/>
     </LinearLayout>
 
 </LinearLayout>

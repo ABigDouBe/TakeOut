@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,13 +29,17 @@ import javax.inject.Inject;
  * Created by qurongzhen on 2017/7/21.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout mSrlHome;
     private LinearLayout mLlTitleContainer;
     private RecyclerView mRvHome;
+
+    //和地图有关的几个控件
     private LinearLayout mLlTitleSearch;
     private TextView mHomeTvAddress;
+    private ImageView iv_arraw_list_map;
+    private LinearLayout ll_list_map;
 
     @Inject
     HomeFragmentPresenter presenter;
@@ -55,6 +60,10 @@ public class HomeFragment extends BaseFragment {
         mLlTitleContainer = (LinearLayout) view.findViewById(R.id.ll_title_container);
         mLlTitleSearch = (LinearLayout) view.findViewById(R.id.ll_title_search);
         mHomeTvAddress = (TextView) view.findViewById(R.id.home_tv_address);
+
+        iv_arraw_list_map = (ImageView) view.findViewById(R.id.iv_arraw_list_map);
+        ll_list_map = (LinearLayout) view.findViewById(R.id.ll_list_map);
+
         return view;
     }
 
@@ -64,10 +73,20 @@ public class HomeFragment extends BaseFragment {
         adapter = new HomeRecyclerViewAdapter(MyApplication.getmContext());
         mRvHome.setAdapter(adapter);
         mRvHome.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
-        mRvHome.addOnScrollListener(listener);
 
-        presenter.getData();
+        mRvHome.addOnScrollListener(listener);
+        mSrlHome.setOnRefreshListener(this);
+        ll_list_map.setOnClickListener(mapListener);
+
     }
+
+    private View.OnClickListener mapListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //加载地图
+            Toast.makeText(MyApplication.getmContext(), "加载地图", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private int sumY=0;
     private float duration=150.0f;//在0-150之间去改变头部的透明度
@@ -82,12 +101,12 @@ public class HomeFragment extends BaseFragment {
             // 如果小于0那么透明度为初始值，如果大于150为不透明状态
 
             int bgColor=0X553190E8;
-            if(sumY<0){
+            if(sumY<=0){
                 bgColor=0X553190E8;
             }else if(sumY>150){
                 bgColor=0XFF3190E8;
             }else{
-                bgColor = (int) evaluator.evaluate(sumY / duration, 0X553190E8, 0XFF3190E8);
+                bgColor = (int) evaluator.evaluate(sumY / duration, 0XFF3190E8,0X553190E8);
             }
 
             mLlTitleContainer.setBackgroundColor(bgColor);
@@ -106,5 +125,20 @@ public class HomeFragment extends BaseFragment {
 
     public void failed(String message) {
         Toast.makeText(getContext(), "数据加载失败"+message, Toast.LENGTH_SHORT).show();
+    }
+    public void successed(String message) {
+        Toast.makeText(getContext(), "数据加载成功"+message, Toast.LENGTH_SHORT).show();
+        //如果加载完成，通知适配器更新，刷新停止转动
+        adapter.notifyDataSetChanged();
+        closeRefresh();
+    }
+    public void closeRefresh(){
+        if(mSrlHome.isRefreshing()){
+            mSrlHome.setRefreshing(false);
+        }
+    }
+    @Override
+    public void onRefresh() {
+        presenter.getData();
     }
 }
